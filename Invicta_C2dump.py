@@ -3,6 +3,7 @@ from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad, unpad
 from Crypto.Random import get_random_bytes
 import binascii
+import sys
 
 #AES implementation
 def aes_encrypt(plain_text, key_hex, iv_hex):
@@ -36,14 +37,18 @@ def get_data(file_path, offset_hex):
         
     return ascii_string
 
-file_path = "asd" #Invicta Stealer binary
-offset_hex = "001E4460"  #AES encrypted C2 offset
+try:
+    file_path = sys.argv[1] #Invicta Stealer binary
+    offset_hex = "001E4460"  #AES encrypted C2 offset
 
-ascii_string = get_data(file_path, offset_hex)
+    ascii_string = get_data(file_path, offset_hex)
 
+    key_hex = '00000000000000000000000000000000'  #AES KEY
+    iv_hex = '00000000000000000000000000000000'   #AES IV
+    decrypted_text = aes_decrypt(ascii_string, key_hex, iv_hex)
+    print("Invicta Stealer C2:", decrypted_text)
 
-key_hex = '00000000000000000000000000000000'  #AES KEY
-iv_hex = '00000000000000000000000000000000'   #AES IV
-decrypted_text = aes_decrypt(ascii_string, key_hex, iv_hex)
-print("Invicta Stealer C2:", decrypted_text)
+except:
+    print("Invicta Stealer binary file path is missing")
+    print("try this: python3 Invicta_C2dump.py <Invicta_stealer.exe>")
 
