@@ -1,0 +1,1 @@
+# InvictaStealer_C2_Extractor
